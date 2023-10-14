@@ -35,6 +35,6 @@ public class UserController {
     // Will add the data from the class in the browser page
     @PostMapping("/")
     public void createUser(@RequestBody UserModel UserModel) {
-        System.out.println(UserModel.name);
+        System.out.println(UserModel.getUsername());
     }
 }
