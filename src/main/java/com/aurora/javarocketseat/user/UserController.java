@@ -1,5 +1,6 @@
 package com.aurora.javarocketseat.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,8 @@ public class UserController {
      * Void (Nothing returns)
      */
 
+     @Autowired // Permite que o Spring gerencie e controle todo o ciclo de vida do repositório
+     private IUserRepository userRepository;
 
     /** 
     * Receiving the Object UserModel in the createUser class
@@ -34,7 +37,11 @@ public class UserController {
 
     // Will add the data from the class in the browser page
     @PostMapping("/")
-    public void createUser(@RequestBody UserModel UserModel) {
-        System.out.println(UserModel.getUsername());
+    public UserModel createUser(@RequestBody UserModel UserModel) {
+
+        // It's calling the userRepository who's linked to the JpaRepository, who's linked with the Database
+        // It's saving the UserModel Class (that have the user attributes) in the database, and returning it's result
+        var userCreated = this.userRepository.save(UserModel);
+        return userCreated;
     }
 }
