@@ -1,6 +1,8 @@
 package com.aurora.javarocketseat.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,18 +39,22 @@ public class UserController {
 
     // Will add the data from the class in the browser page
     @PostMapping("/")
-    public UserModel createUser(@RequestBody UserModel UserModel) {
+
+    // Response ENtity type allow to return if the program suceeds with code 200 or if it fails with error codes 400 or 500
+    public ResponseEntity createUser(@RequestBody UserModel UserModel) {
 
         // Now that we added it in the Controller, we can use it here.
         var user = this.userRepository.findByUsername(UserModel.getUsername());
 
         if (user != null) {
-            System.out.println("O Usuário ja existe!");
-            return null;
+            // Error Message
+            // Status Code - HttpStatus is a library that allow to see better what which code means what
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já Existe!");
         }
+
         // It's calling the userRepository who's linked to the JpaRepository, who's linked with the Database
         // It's saving the UserModel Class (that have the user attributes) in the database, and returning it's result
         var userCreated = this.userRepository.save(UserModel);
-        return userCreated;
+        return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
     }
 }
