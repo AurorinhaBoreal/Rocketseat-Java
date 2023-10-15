@@ -39,6 +39,13 @@ public class UserController {
     @PostMapping("/")
     public UserModel createUser(@RequestBody UserModel UserModel) {
 
+        // Now that we added it in the Controller, we can use it here.
+        var user = this.userRepository.findByUsername(UserModel.getUsername());
+
+        if (user != null) {
+            System.out.println("O Usuário ja existe!");
+            return null;
+        }
         // It's calling the userRepository who's linked to the JpaRepository, who's linked with the Database
         // It's saving the UserModel Class (that have the user attributes) in the database, and returning it's result
         var userCreated = this.userRepository.save(UserModel);
