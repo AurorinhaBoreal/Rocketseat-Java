@@ -4,32 +4,35 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.UUID;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-@Data // Configura automaticamente os Getters e Setters para todos os atributos da classe
-// @Getter Configura automaticamente os Getter para todos os atributos da classe
-// @Setter Configura automaticamente os Setter para todos os atributos da classe
+@Data // Automatically configure the getters and setters to all the attributes of the class
+// @Getter Automatically configure all the getters to all the attributes of the class
+// @Setter Automatically configure all the setters to all the attributes of the class
 
-// Criando uma tabela usuários através do H2
+// Creating a users table through H2
 @Entity(name ="tb_users")
 public class UserModel {
     
-    @Id // Identificar como chave primária
-    @GeneratedValue(generator = "UUID") // Gerar automaticamente
+    @Id // Identifiyng it as a primary key
+    @GeneratedValue(generator = "UUID") // Automatically generating it
     private UUID id;
 
+    @Column(unique = true) // Contraint username to a unique attribute
     private String username;
     private String name;
     private String password;
 
-    // Setter - Quando precisamos buscar alguma informação que mudou dentro de um atributo, atualizar o atributo
-    // Getter - Quando queremos puxar o valor de determinado atributo
-    // Utilizando a lib Lombok, é possivel colocar um getter/setter em um único atributo, apenas posicione o componente logo acima do mesmo
+    // Setter - When we need to search any information that has changed inside an attribute, update the attribute
+    // Getter - When we want to get the value of a determinated attribute
+    // Utilizing the Lombok lib, it'a possible to put a getter/setter in an unique attribute, just put the component right above it
 
-    @CreationTimestamp // Marca o horário de criação de determinado dado
+    @CreationTimestamp // States the creation time of the user
     private LocalDateTime createdAt;
 
     
